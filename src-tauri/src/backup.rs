@@ -20,12 +20,12 @@ pub async fn import_app_data_from_file(
         .app_data_dir()
         .map_err(|e| format!("Failed to get app_data_dir: {}", e))?;
 
-    // 将文件内容保存到临时文件
+    // Save file content to temporary file
     let temp_zip_path = data_dir.join("temp_import.zip");
     fs::write(&temp_zip_path, &file_content)
         .map_err(|e| format!("Failed to write temp file: {}", e))?;
 
-    // 创建临时目录用于解压
+    // Create temporary directory for extraction
     let temp_dir = data_dir.join("temp_import");
     if temp_dir.exists() {
         fs::remove_dir_all(&temp_dir)
@@ -34,10 +34,10 @@ pub async fn import_app_data_from_file(
     fs::create_dir_all(&temp_dir)
         .map_err(|e| format!("Failed to create temp directory: {}", e))?;
 
-    // 使用 zip crate 解压
+    // Extract using zip crate
     extract_zip(temp_zip_path.as_path(), &temp_dir)?;
 
-    // 处理 store.json
+    // Handle store.json
     let store_path = temp_dir.join("store.json");
     if store_path.exists() {
         let dest_store_path = data_dir.join("store.json");
@@ -45,7 +45,7 @@ pub async fn import_app_data_from_file(
             .map_err(|e| format!("Failed to copy store.json: {}", e))?;
     }
 
-    // 复制其他文件
+    // Copy other files
     for entry in fs::read_dir(&temp_dir)
         .map_err(|e| format!("Failed to read temp directory: {}", e))? {
         let entry = entry.map_err(|e| format!("Failed to read directory entry: {}", e))?;
@@ -55,7 +55,7 @@ pub async fn import_app_data_from_file(
             continue;
         }
 
-        // 跳过 SQLite 临时文件，让数据库重新创建
+        // Skip SQLite temporary files, let database recreate
         let file_name_str = file_name.to_string_lossy();
         if file_name_str.ends_with(".db-shm") || file_name_str.ends_with(".db-wal") {
             continue;
@@ -73,7 +73,7 @@ pub async fn import_app_data_from_file(
         }
     }
 
-    // 清理临时目录
+    // Clean up temporary directory
     fs::remove_dir_all(&temp_dir)
         .map_err(|e| format!("Failed to remove temp directory: {}", e))?;
     fs::remove_file(&temp_zip_path)
@@ -84,7 +84,7 @@ pub async fn import_app_data_from_file(
 
 #[command]
 pub async fn export_app_data(app_handle: AppHandle, output_path: String) -> Result<String, String> {
-    // 获取数据目录
+    // Get data directory
     let data_dir = app_handle
         .path()
         .app_data_dir()
@@ -94,16 +94,16 @@ pub async fn export_app_data(app_handle: AppHandle, output_path: String) -> Resu
         return Err(format!("Data directory does not exist: {:?}", data_dir));
     }
 
-    // 尝试直接保存到用户选择的路径
+    // Try to save directly to user selected path
     let dest_path = PathBuf::from(&output_path);
 
-    // 尝试压缩
+    // Try to compress
     let write_result = compress_dir(&data_dir, &dest_path);
 
     match write_result {
         Ok(_) => Ok(dest_path.to_string_lossy().to_string()),
         Err(_e) => {
-            // 如果失败，尝试保存到 document_dir
+            // If failed, try to save to document_dir
             let export_dir = app_handle
                 .path()
                 .document_dir()
@@ -112,7 +112,7 @@ pub async fn export_app_data(app_handle: AppHandle, output_path: String) -> Resu
             let file_name = PathBuf::from(&output_path)
                 .file_name()
                 .map(|n| n.to_string_lossy().to_string())
-                .unwrap_or_else(|| "note-gen-backup.zip".to_string());
+                .unwrap_or_else(|| "novaflow-backup.zip".to_string());
 
             let new_dest_path = export_dir.join(&file_name);
 
@@ -130,7 +130,7 @@ pub async fn import_app_data(app_handle: AppHandle, zip_path: String) -> Result<
         .app_data_dir()
         .map_err(|e| format!("Failed to get app_data_dir: {}", e))?;
 
-    // 创建临时目录用于解压
+    // Create temporary directory for extraction
     let temp_dir = data_dir.join("temp_import");
     if temp_dir.exists() {
         fs::remove_dir_all(&temp_dir)
@@ -139,10 +139,10 @@ pub async fn import_app_data(app_handle: AppHandle, zip_path: String) -> Result<
     fs::create_dir_all(&temp_dir)
         .map_err(|e| format!("Failed to create temp directory: {}", e))?;
 
-    // 使用 zip crate 解压
+    // Extract using zip crate
     extract_zip(PathBuf::from(&zip_path).as_path(), &temp_dir)?;
 
-    // 处理 store.json
+    // Handle store.json
     let store_path = temp_dir.join("store.json");
     if store_path.exists() {
         let dest_store_path = data_dir.join("store.json");
@@ -150,7 +150,7 @@ pub async fn import_app_data(app_handle: AppHandle, zip_path: String) -> Result<
             .map_err(|e| format!("Failed to copy store.json: {}", e))?;
     }
 
-    // 复制其他文件
+    // Copy other files
     for entry in fs::read_dir(&temp_dir)
         .map_err(|e| format!("Failed to read temp directory: {}", e))? {
         let entry = entry.map_err(|e| format!("Failed to read directory entry: {}", e))?;
@@ -160,7 +160,7 @@ pub async fn import_app_data(app_handle: AppHandle, zip_path: String) -> Result<
             continue;
         }
 
-        // 跳过 SQLite 临时文件，让数据库重新创建
+        // Skip SQLite temporary files, let database recreate
         let file_name_str = file_name.to_string_lossy();
         if file_name_str.ends_with(".db-shm") || file_name_str.ends_with(".db-wal") {
             continue;
@@ -178,14 +178,14 @@ pub async fn import_app_data(app_handle: AppHandle, zip_path: String) -> Result<
         }
     }
 
-    // 清理临时目录
+    // Clean up temporary directory
     fs::remove_dir_all(&temp_dir)
         .map_err(|e| format!("Failed to remove temp directory: {}", e))?;
 
     Ok(())
 }
 
-// 递归复制目录的辅助函数
+// Helper function to recursively copy directory
 fn copy_dir_recursive(src: &Path, dest: &Path) -> Result<(), String> {
     if !dest.exists() {
         fs::create_dir_all(dest).map_err(|e| format!("Failed to create directory: {}", e))?;
@@ -207,9 +207,9 @@ fn copy_dir_recursive(src: &Path, dest: &Path) -> Result<(), String> {
     Ok(())
 }
 
-// 使用 zip crate 压缩目录
+// Compress directory using zip crate
 fn compress_dir(src_dir: &Path, dest_file: &Path) -> Result<(), String> {
-    // 确保父目录存在
+    // Ensure parent directory exists
     if let Some(parent) = dest_file.parent() {
         if parent != src_dir {
             fs::create_dir_all(parent).map_err(|e| format!("Failed to create parent directory: {}", e))?;
@@ -272,7 +272,7 @@ fn add_dir_to_zip<W: Write + Seek>(
     Ok(())
 }
 
-// 解压 zip 文件
+// Extract zip file
 fn extract_zip(zip_path: &Path, dest_dir: &Path) -> Result<(), String> {
     let file = fs::File::open(zip_path)
         .map_err(|e| format!("Failed to open zip file: {}", e))?;

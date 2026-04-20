@@ -10,7 +10,7 @@ pub fn setup_app(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 
     cleanup_temp_screenshot_dir(&app_handle);
 
-    // 在 Windows 上明确禁用窗口装饰
+    // Explicitly disable window decorations on Windows
     #[cfg(target_os = "windows")]
     {
         if let Some(window) = app_handle.get_webview_window("main") {
@@ -19,10 +19,10 @@ pub fn setup_app(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    // 设置窗口事件监听器
+    // Setup window event listeners
     window::setup_window_events(&app_handle)?;
 
-    // 创建系统托盘
+    // Create system tray
     let _tray = create_tray(&app_handle)?;
 
     Ok(())

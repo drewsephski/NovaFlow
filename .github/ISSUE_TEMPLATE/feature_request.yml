@@ -1,13 +1,13 @@
-name: 💡 改进建议
+name: 💡 Feature Request
 title: '[feat] '
-description: 你有什么好的灵感？
+description: Have a great idea?
 labels: ['type: feat']
 
 body:
   - type: textarea
     id: problem
     attributes:
-      label: 描述你的建议
-      description: 清楚的描述这个建议可以解决什么问题
+      label: Describe your suggestion
+      description: Clearly describe what problem this suggestion would solve
     validations:
       required: true

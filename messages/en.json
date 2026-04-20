@@ -12,6 +12,8 @@
     "theme": "Theme",
     "light": "Light",
     "dark": "Dark",
+    "lightMode": "Switch to Light Mode",
+    "darkMode": "Switch to Dark Mode",
     "system": "System",
     "pin": "Pin",
     "unpin": "Unpin",

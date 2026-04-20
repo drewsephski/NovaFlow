@@ -7,6 +7,7 @@ import { NextIntlProvider } from "@/components/providers/NextIntlProvider";
 import Script from "next/script";
 import { getSyncPushQueue } from "@/lib/sync/sync-push-queue";
 import { ConsoleFilter } from "@/components/console-filter";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export default function RootLayout({
   children,
@@ -43,13 +44,20 @@ export default function RootLayout({
           </Script>
         </head>
         <body suppressHydrationWarning>
-          <ConsoleFilter />
-          <Suspense>
-            <NextIntlProvider>
-              {children}
-            </NextIntlProvider>
-          </Suspense>
-          <Toaster />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ConsoleFilter />
+            <Suspense>
+              <NextIntlProvider>
+                {children}
+              </NextIntlProvider>
+            </Suspense>
+            <Toaster />
+          </ThemeProvider>
         </body>
       </html>
     </>

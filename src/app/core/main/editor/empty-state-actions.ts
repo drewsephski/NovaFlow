@@ -9,7 +9,7 @@ export async function createNewNoteFromEmptyState({
   await newFile()
 }
 
-export const ONBOARDING_SAMPLE_RECORD = `This is my first record in NoteGen.
+export const ONBOARDING_SAMPLE_RECORD = `This is my first record in NovaFlow.
 
 I can quickly jot down scattered ideas without organizing them right away.
 Later, I can organize these records into a formal note and continue editing.

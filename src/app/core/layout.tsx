@@ -117,18 +117,18 @@ export default function RootLayout({
     }
   }, [currentLocale])
 
-  // Disable browser back shortcut (Backspace) and add search shortcut (Cmd/Ctrl+F)
+  // Disable browser back shortcut (Backspace) and add search shortcuts (Cmd/Ctrl+K or Cmd/Ctrl+F)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Search shortcut: Cmd+F (macOS) or Ctrl+F (Windows/Linux)
-      if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
+      // Search shortcuts: Cmd+K or Cmd+F (macOS) / Ctrl+K or Ctrl+F (Windows/Linux)
+      if ((e.metaKey || e.ctrlKey) && (e.key.toLowerCase() === 'k' || e.key.toLowerCase() === 'f')) {
         // Check if focus is in editor
         const target = e.target as HTMLElement
         const editorElement = document.getElementById('aritcle-md-editor')
         const isFocusInEditor = editorElement && editorElement.contains(target)
 
-        // If focus is in editor, trigger editor search
-        if (isFocusInEditor) {
+        // If focus is in editor and using Cmd/Ctrl+F, trigger editor search
+        if (isFocusInEditor && e.key.toLowerCase() === 'f') {
           e.preventDefault()
           // Trigger editor search
           emitter.emit('editor-search-trigger' as any)
