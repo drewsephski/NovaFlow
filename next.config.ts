@@ -18,7 +18,6 @@ const nextConfig: NextConfig = {
     silenceDeprecations: ['legacy-js-api'],
   },
   reactStrictMode: false,
-  turbopack: {},
   devIndicators: false,
   // Trailing slash for static export consistency
   trailingSlash: true,
