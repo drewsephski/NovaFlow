@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "buildCommand": "next build",
+  "outputDirectory": "out",
+  "framework": "nextjs",
+  "rewrites": [
+    { "source": "/download", "destination": "/download.html" },
+    { "source": "/docs", "destination": "/docs.html" }
+  ]
+}
