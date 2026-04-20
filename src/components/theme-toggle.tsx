@@ -53,6 +53,9 @@ export default function ThemeToggle({ size = "md" }: ThemeToggleProps) {
               duration={650}
               onToggle={() => setTheme(isDark ? 'light' : 'dark')}
               className="text-foreground"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
             />
           </div>
         </TooltipTrigger>
