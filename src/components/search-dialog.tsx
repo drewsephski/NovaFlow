@@ -542,8 +542,11 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   }
 
   return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton={false} className="h-[56vh] max-h-[56vh] max-w-4xl overflow-hidden border-border/70 bg-background p-0 shadow-2xl">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        showCloseButton={false}
+        className="h-[56vh] max-h-[56vh] max-w-4xl overflow-hidden border-border/70 bg-background p-0 shadow-2xl"
+      >
         <DialogTitle className="sr-only">{t('search.placeholder')}</DialogTitle>
         <Command
           shouldFilter={false}
@@ -553,7 +556,18 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             "[&_[cmdk-group]]:px-0 [&_[cmdk-input-wrapper]]:border-0 [&_[cmdk-input-wrapper]]:bg-transparent [&_[cmdk-input-wrapper]]:px-0",
             "[&_[cmdk-input-wrapper]_svg]:size-4 [&_[cmdk-input-wrapper]_svg]:text-muted-foreground",
             "[&_[cmdk-input]]:h-10 [&_[cmdk-input]]:text-base [&_[cmdk-input]]:font-medium [&_[cmdk-input]]:tracking-tight [&_[cmdk-input]]:placeholder:text-muted-foreground/60",
-            "[&_[cmdk-list]]:px-0 [&_[cmdk-list]]:py-2"
+            "[&_[cmdk-list]]:px-0 [&_[cmdk-list]]:py-2",
+            "[&_[cmdk-item]]:motion-safe:animate-in [&_[cmdk-item]]:motion-safe:fade-in-0 [&_[cmdk-item]]:motion-safe:slide-in-from-bottom-2 [&_[cmdk-item]]:motion-safe:duration-300",
+            "[&_[cmdk-item]:nth-child(1)]:motion-safe:delay-[0ms]",
+            "[&_[cmdk-item]:nth-child(2)]:motion-safe:delay-[20ms]",
+            "[&_[cmdk-item]:nth-child(3)]:motion-safe:delay-[40ms]",
+            "[&_[cmdk-item]:nth-child(4)]:motion-safe:delay-[60ms]",
+            "[&_[cmdk-item]:nth-child(5)]:motion-safe:delay-[80ms]",
+            "[&_[cmdk-item]:nth-child(6)]:motion-safe:delay-[100ms]",
+            "[&_[cmdk-item]:nth-child(7)]:motion-safe:delay-[120ms]",
+            "[&_[cmdk-item]:nth-child(8)]:motion-safe:delay-[140ms]",
+            "[&_[cmdk-item]:nth-child(9)]:motion-safe:delay-[160ms]",
+            "[&_[cmdk-item]:nth-child(10)]:motion-safe:delay-[180ms]"
           )}
         >
           {searchContent}

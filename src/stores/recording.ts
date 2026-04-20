@@ -1,26 +1,26 @@
 import { create } from 'zustand'
 
 interface RecordingState {
-  // 录音状态
+  // Recording state
   isRecording: boolean
   isPaused: boolean
-  recordingDuration: number // 录音时长（秒）
+  recordingDuration: number // Recording duration in seconds
 
-  // 录音数据
+  // Recording data
   audioChunks: Blob[]
   mediaRecorder: MediaRecorder | null
 
-  // 计时器
+  // Timer
   timerId?: NodeJS.Timeout
 
-  // 控制方法
+  // Control methods
   startRecording: () => Promise<void>
   pauseRecording: () => void
   resumeRecording: () => void
   stopRecording: () => Promise<Blob | null>
   cancelRecording: () => void
   
-  // 内部方法
+  // Internal methods
   setRecordingDuration: (duration: number) => void
   resetState: () => void
 }
@@ -37,13 +37,13 @@ const useRecordingStore = create<RecordingState>((set, get) => ({
   startRecording: async () => {
     try {
       if (!navigator.mediaDevices?.getUserMedia) {
-        throw new Error('当前环境不支持麦克风录音，请检查 Android WebView 或应用权限配置')
+        throw new Error('This environment does not support microphone recording. Please check Android WebView or app permission configuration.')
       }
 
-      // 请求麦克风权限
+      // Request microphone permission
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       
-      // 优先尝试更兼容的格式
+      // Try more compatible formats first
       let mimeType = 'audio/webm'
       const supportedTypes = [
         'audio/wav',
@@ -60,7 +60,7 @@ const useRecordingStore = create<RecordingState>((set, get) => ({
         }
       }
       
-      // 创建MediaRecorder实例
+      // Create MediaRecorder instance
       const mediaRecorder = new MediaRecorder(stream, { mimeType })
       
       const chunks: Blob[] = []
@@ -72,19 +72,19 @@ const useRecordingStore = create<RecordingState>((set, get) => ({
       }
       
       mediaRecorder.onstop = () => {
-        // 停止所有音频轨道
+        // Stop all audio tracks
         stream.getTracks().forEach(track => track.stop())
       }
       
       mediaRecorder.start()
       
-      // 启动计时器，保存到 state
+      // Start timer, save to state
       const timerId = setInterval(() => {
         const state = get()
         if (state.isRecording && !state.isPaused) {
           set({ recordingDuration: state.recordingDuration + 1 })
         } else {
-          // 暂停时清除计时器
+          // Clear timer when paused
           clearInterval(state.timerId)
           set({ timerId: undefined })
         }
@@ -100,20 +100,20 @@ const useRecordingStore = create<RecordingState>((set, get) => ({
       })
       
     } catch (error) {
-      console.error('启动录音失败:', error)
+      console.error('Failed to start recording:', error)
       
-      // 根据错误类型提供更具体的错误信息
+      // Provide more specific error messages based on error type
       if (error instanceof DOMException) {
         if (error.name === 'NotAllowedError') {
-          throw new Error('麦克风权限被拒绝，请在系统设置中允许 NoteGen 访问麦克风')
+          throw new Error('Microphone permission denied. Please allow NovaFlow to access microphone in system settings.')
         } else if (error.name === 'NotFoundError') {
-          throw new Error('未检测到麦克风设备，请连接麦克风后重试')
+          throw new Error('No microphone device detected. Please connect a microphone and try again.')
         } else if (error.name === 'NotReadableError') {
-          throw new Error('麦克风正在被其他应用使用，请关闭其他应用后重试')
+          throw new Error('Microphone is being used by another application. Please close other apps and try again.')
         }
       }
       
-      throw new Error('无法启动录音，请检查麦克风设备和权限设置')
+      throw new Error('Unable to start recording. Please check microphone device and permission settings.')
     }
   },
 
@@ -121,7 +121,7 @@ const useRecordingStore = create<RecordingState>((set, get) => ({
     const { mediaRecorder, timerId } = get()
     if (mediaRecorder && mediaRecorder.state === 'recording') {
       mediaRecorder.pause()
-      // 暂停时清除计时器
+      // Clear timer when paused
       if (timerId) {
         clearInterval(timerId)
       }
@@ -140,7 +140,7 @@ const useRecordingStore = create<RecordingState>((set, get) => ({
   stopRecording: async (): Promise<Blob | null> => {
     const { mediaRecorder, audioChunks, timerId } = get()
 
-    // 停止时清除计时器
+    // Clear timer when stopped
     if (timerId) {
       clearInterval(timerId)
     }
@@ -172,7 +172,7 @@ const useRecordingStore = create<RecordingState>((set, get) => ({
 
   resetState: () => {
     const { timerId } = get()
-    // 重置时清除计时器
+    // Clear timer when resetting
     if (timerId) {
       clearInterval(timerId)
     }

@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl'
 import { useSidebarStore } from '@/stores/sidebar'
 import { PinToggle } from './pin-toggle'
 import { SyncToggle } from './title-bar-toolbars/sync-toggle'
+import ThemeToggle from './theme-toggle'
 import AppStatus from './app-status'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
@@ -342,6 +343,8 @@ export function TitleBar({ onSearchClick, onActivityClick, activityOpen = false 
           <SyncToggle />
           
           <PinToggle />
+
+          <ThemeToggle />
           
           <Tooltip>
             <TooltipTrigger asChild>
@@ -370,8 +373,7 @@ export function TitleBar({ onSearchClick, onActivityClick, activityOpen = false 
             <TooltipContent side="bottom">
               <p>{pathname.includes('/core/setting') ? t('common.back') : t('common.settings')}</p>
             </TooltipContent>
-          </Tooltip>
-          
+          </Tooltip>          
           <AppStatus />
         </div>
 

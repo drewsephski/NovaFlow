@@ -80,7 +80,7 @@ export default function LandingPage() {
                 Download
               </a>
               <a 
-                href="https://github.com/codexu/note-gen" 
+                href="https://github.com/drewsephski/novaflow" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-zinc-400 hover:text-amber-500 transition-colors"
@@ -91,14 +91,14 @@ export default function LandingPage() {
             </div>
 
             <div className="hidden md:flex items-center gap-4">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 className="text-sm text-zinc-400 hover:text-white"
                 asChild
               >
                 <a href="/docs">Documentation</a>
               </Button>
-              <Button 
+              <Button
                 className="bg-amber-500 hover:bg-amber-400 text-black font-medium"
                 asChild
               >
@@ -131,8 +131,8 @@ export default function LandingPage() {
               <a href="/download" className="block text-sm text-amber-500 font-medium py-2">
                 Download
               </a>
-              <a 
-                href="https://github.com/codexu/note-gen" 
+              <a
+                href="https://github.com/drewsephski/novaflow"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-zinc-400 hover:text-amber-500 py-2"
@@ -382,7 +382,7 @@ export default function LandingPage() {
                 Download
               </a>
               <a 
-                href="https://github.com/codexu/note-gen" 
+                href="https://github.com/drewsephski/novaflow" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"

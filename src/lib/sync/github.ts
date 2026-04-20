@@ -416,7 +416,7 @@ export async function getRelease() {
       proxy
     };
     
-    const url = `https://api.github.com/repos/codexu/note-gen/releases/latest`;
+    const url = `https://api.github.com/repos/drewsephski/NovaFlow/releases/latest`;
     const response = await fetch(url, requestOptions);
     
     if (response.status >= 200 && response.status < 300) {
